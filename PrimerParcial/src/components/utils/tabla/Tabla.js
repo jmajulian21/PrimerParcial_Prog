@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from './header/HeaderC';
-import { Table, TableBody, TableRow, TableCell, Grid, IconButton,TextField } from '@material-ui/core';
+import { Button,Table, TableBody, TableRow, TableCell, Grid, IconButton,TextField } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 class Tabla extends Component {
@@ -12,18 +12,24 @@ class Tabla extends Component {
             email: "",
             sueldo: ""
         }
+
     }
 
     editarOnClick = (id, nombre, email, sueldo) => {
-        this.props.onEdit(id, nombre, email, sueldo);
+        this.setState({id:id,nombre:nombre,email:email,sueldo:sueldo});
     };
 
     eliminarOnClick = (id) => {
         this.props.onDelete(id);
     };
 
-    onClickHabilitarEdicion = (id) =>{
+    onClickEnviarEdicion = ()  =>{
+        this.props.onEdit(this.state.id, this.state.nombre, this.state.email, this.state.sueldo);
+    }
 
+    handleChange = (e,prop) => {
+        let valor = e.target.value;
+        this.setState({[prop]: valor});
     }
 
     render() {
@@ -61,17 +67,17 @@ class Tabla extends Component {
                 <h4>Persona</h4>
                 <Grid container direction="column">
                     <Grid item xs>
-                        <TextField label="nombre"  value={this.state.nombre}/>
-                        <TextField label="email"  value={this.state.email}/>
+                        <TextField label="nombre"  value={this.state.nombre} onChange={e => this.handleChange(e,"name")}/>
+                        <TextField label="email"  value={this.state.email} onChange={e => this.handleChange(e,"email")}/>
                     </Grid>
                     <Grid item xs>
-                        <TextField label="sueldo"  value={this.state.sueldo}/>
+                        <TextField label="sueldo"  value={this.state.sueldo} onChange={e => this.handleChange(e,"sueldo")}/>
                     </Grid>
                     <Grid item xs>
                         <Grid container>
                             <Grid item xs={3} />
                             <Grid item xs={1}>
-                                
+                                <Button onClick={this.onClickEnviarEdicion}>Enviar</Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -81,5 +87,5 @@ class Tabla extends Component {
     }
 }
 
-//Buscar la manera que la linea 15 a 18 sea dinamico. Preguntar Profesor.
+
 export default Tabla;
